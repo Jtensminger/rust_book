@@ -1,23 +1,76 @@
 
-use std::collections::HashMap;
-// Playing w/ Hash Maps
+use std::{collections::HashMap, vec};
+
+// Given a list of integers, 
+// use a vector and return the median (when sorted, the value in the middle position) 
+// and mode (the value that occurs most often; a hash map will be helpful here) of the list.
+
 fn main() {
-    let mut h: HashMap<char, Vec<usize>> = HashMap::new();
+    let mut raw_list: Vec<i32> = vec![12, 474, 4, 1, 7, 39, 8, 55];
+    
+    println!("median: {}", median(&mut raw_list));
 
-    for (i, c) in "hello!".chars().enumerate() {
-        h.entry(c)
-        .or_insert(Vec::new())
-        .push(i);
+    match mode(&raw_list) {
+        Some(v) => println!("mode: {}", v),
+        None => println!("mode: none")
+    }
+}
+
+fn median(vec: &mut Vec<i32>) -> i32 {
+    vec.sort();
+
+    match vec.len() % 2 {
+        0 => (vec[vec.len() / 2] + vec[(vec.len() - 1) / 2]) / 2,
+        _ => vec[(vec.len() - 1) / 2]
+    }
+}
+
+fn mode(vec: &Vec<i32>) -> Option<i32> {
+    let mut hm: HashMap<i32,i32> = HashMap::new();
+    let mut mode: i32 = 0;
+    let mut highest_count: i32 = 1;
+    let list_length: usize = vec.len();
+
+    for item in vec {
+        let count = hm.entry(*item).or_insert(0);
+        *count += 1;
+
+        if *count > highest_count {
+            mode = *item;
+            highest_count = *count;
+        }
     }
 
-    let mut sum = 0;
-
-    for i in h.get(&'l').unwrap() {
-        sum += *i;
+    match hm.keys().len() != list_length {
+        true => Some(mode),
+        false => None
     }
+}
 
-    println!("{}", sum);
-  }
+
+
+
+
+
+
+// Playing w/ Hash Maps
+// fn main() {
+//     let mut h: HashMap<char, Vec<usize>> = HashMap::new();
+
+//     for (i, c) in "hello!".chars().enumerate() {
+//         h.entry(c)
+//         .or_insert(Vec::new())
+//         .push(i);
+//     }
+
+//     let mut sum = 0;
+
+//     for i in h.get(&'l').unwrap() {
+//         sum += *i;
+//     }
+
+//     println!("{}", sum);
+// }
 
 // Hash Map basics
 // fn main () {
