@@ -16,24 +16,24 @@ fn main () {
     // let mut word: String = String::from("apple");
     let mut word: String = String::from("first");
 
-    // Find the first letter & determine which rule to apply
+    // Find the first letter
     let initial_letter = initial_letter(&mut word);
+
+    // Determine which rule to apply
     let rule = classify_word(&initial_letter);
     
-    // Define Operation
+    // Define the operation to carry out
     let mut operation = PigLatinOperation {
         rule: rule,
         target_word: word,
     };
 
     // Apply Operation
-    let translation = match &operation.rule {
-        PigLatinRule::VOWEL => vowel_transform(&mut operation),
-        PigLatinRule::CONSONANT => consonant_transform(&mut operation)
-    };
+    let translation = translate(&mut operation);
 
     println!("Pig latin: {}", translation);
 }
+
 enum PigLatinRule {
     VOWEL,
     CONSONANT
@@ -103,7 +103,12 @@ fn consonant_transform (operation: &mut PigLatinOperation) -> String {
     return new_word
 }
 
-
+fn translate (operation: &mut PigLatinOperation) -> String {
+    match &operation.rule {
+        PigLatinRule::VOWEL => vowel_transform(operation),
+        PigLatinRule::CONSONANT => consonant_transform(operation)
+    }
+}
 
 /*
 ////// Unicode is a set of valid Characters //////
