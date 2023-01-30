@@ -1,4 +1,4 @@
-use std::thread;
+// use std::thread;
 
 
 fn main() {
@@ -17,4 +17,11 @@ fn main() {
         // 	.join()
         // 	.unwrap();
 
+	let x = 7;
+	let print = || println!("{}", x);
+	apply(print);
+}
+
+fn apply<F:FnOnce()>(f: F) {
+	f()
 }
